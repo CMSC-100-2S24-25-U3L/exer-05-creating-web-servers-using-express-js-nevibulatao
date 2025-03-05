@@ -1,5 +1,5 @@
 import express from 'express';
-import { appendFileSync } from 'fs'; // for writing the txt file
+import { appendFileSync, readFile } from 'fs'; // for writing the txt file
 
 // instantiate server
 const app = express();
@@ -41,6 +41,56 @@ app.post('/add-book', (req, res) => {
         res.send({success: false}); // log false
     }
 });
+
+
+// function for searching by author and isbn
+app.get('/find-by-isbn-author', (req,res) => {
+    if ('isbn' in req.query && 'author' in req.query){
+        // Read the file asynchronously
+        readFile('books.txt', 'utf8', (err, data) => {
+            if (err) {
+            console.error('Error reading file:', err);
+            return;
+        }
+        var dataSplit = data.split("\n");
+
+        for (var i = 0; i < dataSplit.length; i++){ // loop through the data
+            if (dataSplit[i].includes(req.query.isbn) && dataSplit[i].includes(req.query.author)){
+                res.send(dataSplit[i]);
+            }
+        }
+        });    
+    }
+    else {
+        res.send("Incomplete details!");
+    }
+})
+
+// function for searching by author
+app.get('/find-by-author', (req,res) => {
+    if ('author' in req.query){
+        // Read the file asynchronously
+        readFile('books.txt', 'utf8', (err, data) => {
+            if (err) {
+            console.error('Error reading file:', err);
+            return;
+        }
+        var dataSplit = data.split("\n"); // split by lines
+        var toSend = []; // create array to store data
+        for (var i = 0; i < dataSplit.length; i++){ // loop through the data
+            if (dataSplit[i].includes(req.query.author)){
+                // send data to website
+                toSend.push(dataSplit[i]);
+            }
+        }
+        res.send(toSend); 
+        });    
+    }
+    else {
+        res.send("Incomplete details!");
+    }
+})
+
 
 
 // tell server to listen to port 3000, with callback after server is started
