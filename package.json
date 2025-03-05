@@ -1,0 +1,15 @@
+{
+  "name": "exer-05-creating-web-servers-using-express-js-nevibulatao",
+  "version": "1.0.0",
+  "description": "Exercise 5 - Get and Post methods",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nestor Victus T. Bulatao",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "type": "module"
+}
